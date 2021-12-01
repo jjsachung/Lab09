@@ -44,11 +44,11 @@ public class Sprite extends RectF {
     }
 
     public void draw(Canvas canvas){
-        Paint paint = new Paint();
-        paint.setColor(color);
-        canvas.drawCircle(centerX(), centerY(), width()/2, paint);
+//        Paint paint = new Paint();
+//        paint.setColor(color);
+//        canvas.drawCircle(centerX(), centerY(), width()/2, paint);
         if(bitmap == null){
-            Paint p = new Paint();
+            Paint paint = new Paint();
             paint.setColor(color);
             canvas.drawCircle(centerX(), centerY(), width() / 2, paint);
         }
