@@ -10,8 +10,8 @@ import android.graphics.RectF;
 public class Sprite extends RectF {
     private int dX, dY, color;
     private static final int BMP_COLUMNS = 3;
-    private static final int BMP_ROWS = 6;
-    private static final int down = 4, left = 5, right = 6, up = 7;
+    private static final int BMP_ROWS = 8;
+    private static final int DOWN = 4, LEFT = 5, RIGHT = 6, UP = 7;
     private Bitmap bitmap;
     private int currentFrame = 0, iconWidth, iconHeight, animationDelay = 20;
     public Sprite(float left, float top, float right, float bottom, int dX, int dY, int color) {
@@ -34,6 +34,10 @@ public class Sprite extends RectF {
     }
 
     public void update(Canvas canvas){
+        if(left + dX < 0 || right + dX > canvas.getWidth())
+            dX *= -1;
+        if(top + dY > canvas.getHeight())
+            offsetTo(left, -height());
         if(bottom + dY < 0)
             offsetTo(left, canvas.getHeight());
         offset(dX, dY);
@@ -56,20 +60,21 @@ public class Sprite extends RectF {
             iconWidth = bitmap.getWidth() / BMP_COLUMNS / 4;
             iconHeight = bitmap.getHeight() / BMP_ROWS;
             int srcX = currentFrame * iconWidth;
-            int srcY = getAnimationRow() * iconHeight;
+            int srcY = getAnimationRow() * iconHeight + 5;
             Rect src = new Rect(srcX, srcY, srcX + iconWidth, srcY + iconHeight);
+            canvas.drawBitmap(bitmap, src, this, null);
         }
     }
 
     private int getAnimationRow() {
         if(Math.abs(dX) > Math.abs(dY)){
             if(Math.abs(dX)==dX)
-                return right;
-            else return left;
+                return RIGHT;
+            else return LEFT;
         }
         else if(Math.abs(dY) == dY)
-            return down;
-        else return up;
+            return DOWN;
+        else return UP;
     }
 
     public int getdX() {
