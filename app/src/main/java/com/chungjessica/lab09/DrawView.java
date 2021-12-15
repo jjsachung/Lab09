@@ -17,15 +17,20 @@ import androidx.annotation.Nullable;
 public class DrawView extends View {
     Sprite sprite;
     Path trianglePath;
+    //int topBorder = getTopBorder(), bottomBorder = getBottomBorder();
+    int triangleWidth;
+    int numTri = 6;
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
         sprite = new Sprite(getWidth()/2, getHeight()/2,
-                getWidth()/2 + 300, getHeight()/2 + 300, -2, 1, Color.WHITE);
+                getWidth()/2 + 300, getHeight()/2 + 300, -6, 5, Color.WHITE);
+        sprite.setTopBorder((int)(getHeight() * .1));
+        triangleWidth =  (getWidth()/numTri);
         trianglePath = new Path();
-        trianglePath.moveTo(0, 150);
-        trianglePath.lineTo(90, 250);
-        trianglePath.lineTo( 180, 150);
+        trianglePath.moveTo(0, sprite.getTopBorder());
+        trianglePath.lineTo(triangleWidth/2, sprite.getTopBorder() + 100);
+        trianglePath.lineTo( triangleWidth, sprite.getTopBorder());
         trianglePath.close();
     }
 
@@ -36,30 +41,45 @@ public class DrawView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        if(sprite.getCount() < 10)
+            sprite.setTopBorder((int)(getHeight()*.1));
+        else if(sprite.getCount() < 20)
+            sprite.setTopBorder((int)(getHeight()*.15));
+        else if(sprite.getCount() < 30)
+            sprite.setTopBorder((int)(getHeight() * .2));
+        else if(sprite.getCount() < 40)
+            sprite.setTopBorder((int)(getHeight() * .25));
+        triangleWidth =  (getWidth()/numTri);
+        trianglePath = new Path();
+        trianglePath.moveTo(0, sprite.getTopBorder());
+        trianglePath.lineTo(triangleWidth/2, sprite.getTopBorder() + 100);
+        trianglePath.lineTo( triangleWidth, sprite.getTopBorder());
+        trianglePath.close();
         Paint spikes = new Paint();
         spikes.setColor(Color.argb(255, 62, 92, 33));
         spikes.setStyle(STROKE.FILL);
-        canvas.drawRect(0, 0, getWidth(), 150, spikes);
-        canvas.drawRect(0, 1450, getWidth(), getHeight(), spikes);
+        canvas.drawRect(0, 0, getWidth(), sprite.getTopBorder(), spikes);
+        canvas.drawRect(0, getHeight()-sprite.getTopBorder(), getWidth(), getHeight(), spikes);
         canvas.save();
-        for(int i=0;i<getWidth()/180;i++){
+        for(int i=0;i<numTri;i++){
             canvas.drawPath(trianglePath, spikes);
             canvas.translate(180,0);
         }
         canvas.restore();
-        canvas.rotate(180, 90, 800);
-        for(int i = 0; i < getWidth()/180; i++){
+        canvas.save();
+        canvas.rotate(180, getWidth()/2, getHeight()/2);
+        for(int i = 0; i < numTri; i++){
             canvas.drawPath(trianglePath, spikes);
-            canvas.translate(-180, 0);
+            canvas.translate(180, 0);
         }
         canvas.restore();
 
 //            x += 200;
 //        }
 //        canvas.drawCircle(100, 100, 100, p);
-//        sprite.setBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.anotherpokemon));
-//        sprite.draw(canvas);
-//        sprite.update(canvas);
-//        invalidate();
+        sprite.setBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.anotherpokemon));
+        sprite.draw(canvas);
+        sprite.update(canvas);
+        invalidate();
     }
 }
