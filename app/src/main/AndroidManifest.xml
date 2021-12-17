@@ -18,6 +18,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".EndGameActivity"
+            android:label="End Game Activity"
+            android:parentActivityName=".MainActivity"
+            android:exported="true">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"
+                />
+        </activity>
+
     </application>
 
 </manifest>

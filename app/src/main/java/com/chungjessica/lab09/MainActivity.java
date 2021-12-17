@@ -2,6 +2,7 @@ package com.chungjessica.lab09;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -11,19 +12,15 @@ public class MainActivity extends AppCompatActivity {
     DrawView drawView;
     TextView textView;
     boolean test = false;
-    Sprite s;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         textView = findViewById(R.id.gameOverText);
         drawView = findViewById(R.id.drawView);
-        s = drawView.sprite;
-        if(s != null && s.getGameOver()){
+        if(drawView.sprite != null && drawView.sprite.getGameOver()){
             textView.setAlpha(255f);
         }
-        if(s == null)
-            test = true;
         System.out.println(test);
     }
 
@@ -32,4 +29,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
+
+    public void restart(View view) {
+        drawView.sprite.setAlpha(0);
+        drawView.sprite.offsetTo(drawView.getWidth()/2, drawView.getHeight()/2);
+        drawView.sprite.setdY(5);
+        //drawView.sprite.setTopBorder((int)(drawView.getHeight() * .1));
+    }
 }

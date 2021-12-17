@@ -9,7 +9,7 @@ import android.graphics.RectF;
 import android.widget.TextView;
 
 public class Sprite extends RectF {
-    private int dX, dY, color, count = 0, topBorder;
+    private int dX, dY, color, count = 0, topBorder, alpha = 255;
     private static final int BMP_COLUMNS = 3;
     private static final int BMP_ROWS = 8;
     private static final int DOWN = 4, LEFT = 5, RIGHT = 6, UP = 7;
@@ -59,7 +59,7 @@ public class Sprite extends RectF {
         }
         if(bottom + dY > canvas.getHeight() - topBorder - 100){
             Paint paint = new Paint();
-            paint.setColor(Color.argb(255, 242, 207, 78));
+            paint.setColor(Color.argb(alpha, 242, 207, 78));
             canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), paint);
             bottom = canvas.getHeight() - topBorder + 5;
             dY = 0;
@@ -95,6 +95,14 @@ public class Sprite extends RectF {
         else if(Math.abs(dY) == dY)
             return DOWN;
         else return UP;
+    }
+
+    public int getAlpha() {
+        return alpha;
+    }
+
+    public void setAlpha(int alpha) {
+        this.alpha = alpha;
     }
 
     public boolean getGameOver(){
