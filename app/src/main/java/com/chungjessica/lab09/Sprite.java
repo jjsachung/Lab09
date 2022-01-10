@@ -49,21 +49,14 @@ public class Sprite extends RectF {
             currentFrame = ++currentFrame % BMP_COLUMNS;
             animationDelay = 20;
         }
-        if(top + dY < topBorder){
-            Paint paint = new Paint();
-            paint.setColor(Color.argb(255, 242, 207, 78));
-            canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), paint);
-            top = topBorder - 5;
-            dY = 0;
-            gameOver = true;
-        }
-        if(bottom + dY > canvas.getHeight() - topBorder - 100){
-            Paint paint = new Paint();
-            paint.setColor(Color.argb(alpha, 242, 207, 78));
-            canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), paint);
-            bottom = canvas.getHeight() - topBorder + 5;
-            dY = 0;
-            gameOver = true;
+        if(top + dY < topBorder || bottom + dY > canvas.getHeight() - topBorder - 100){
+//            Paint paint = new Paint();
+//            paint.setColor(Color.argb(255, 242, 207, 78));
+//            canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), paint);
+//            top = topBorder - 5;
+            offsetTo(canvas.getWidth()/2, canvas.getHeight()/2);
+            count = 0;
+//            gameOver = true;
         }
     }
 

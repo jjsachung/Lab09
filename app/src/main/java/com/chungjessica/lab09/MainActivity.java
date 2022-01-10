@@ -16,7 +16,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        textView = findViewById(R.id.gameOverText);
         drawView = findViewById(R.id.drawView);
         if(drawView.sprite != null && drawView.sprite.getGameOver()){
             textView.setAlpha(255f);
@@ -24,17 +23,22 @@ public class MainActivity extends AppCompatActivity {
         System.out.println(test);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        drawView.sprite.setdY(0);
+        drawView.sprite.setdX(0);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        drawView.sprite.setdX(-6);
+        drawView.sprite.setdY(5);
+    }
+
     public void moveUp(View view) {
         drawView.sprite.offsetTo(drawView.sprite.getLeft(), drawView.sprite.getTop() - 150);
     }
 
-
-
-
-    public void restart(View view) {
-        drawView.sprite.setAlpha(0);
-        drawView.sprite.offsetTo(drawView.getWidth()/2, drawView.getHeight()/2);
-        drawView.sprite.setdY(5);
-        //drawView.sprite.setTopBorder((int)(drawView.getHeight() * .1));
-    }
 }
