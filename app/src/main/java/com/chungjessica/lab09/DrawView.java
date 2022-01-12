@@ -21,6 +21,8 @@ public class DrawView extends View {
     int triangleWidth;
     int numTri = 6;
     Canvas canvas;
+    int count = 0;
+    int totalSpikes = getHeight()/12;
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
@@ -50,6 +52,7 @@ public class DrawView extends View {
             sprite.setTopBorder((int)(getHeight() * .2));
         else if(sprite.getCount() < 40)
             sprite.setTopBorder((int)(getHeight() * .25));
+
         triangleWidth =  (getWidth()/numTri);
         trianglePath = new Path();
         trianglePath.moveTo(0, sprite.getTopBorder());
@@ -83,4 +86,5 @@ public class DrawView extends View {
         sprite.update(canvas);
         invalidate();
     }
+
 }

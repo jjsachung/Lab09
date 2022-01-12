@@ -23,20 +23,6 @@ public class MainActivity extends AppCompatActivity {
         System.out.println(test);
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        drawView.sprite.setdY(0);
-        drawView.sprite.setdX(0);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        drawView.sprite.setdX(-6);
-        drawView.sprite.setdY(5);
-    }
-
     public void moveUp(View view) {
         drawView.sprite.offsetTo(drawView.sprite.getLeft(), drawView.sprite.getTop() - 150);
     }

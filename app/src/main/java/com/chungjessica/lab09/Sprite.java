@@ -1,9 +1,12 @@
 package com.chungjessica.lab09;
 
+import static android.graphics.Paint.Style.STROKE;
+
 import android.graphics.Canvas;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.widget.TextView;
@@ -36,9 +39,25 @@ public class Sprite extends RectF {
     }
 
     public void update(Canvas canvas){
+        Path[] spikesRight = new Path[12];
+        for(int i = 0; i < 12; i++){
+            Path spike = new Path();
+            spike.moveTo(canvas.getWidth(), i * (canvas.getHeight()/12));
+            spike.lineTo(canvas.getWidth() - 100, (i * (canvas.getHeight()/12))+ canvas.getWidth()/12);
+            spike.lineTo(canvas.getWidth(), (i * (canvas.getHeight()/12)) + canvas.getWidth()/6);
+            spikesRight[i] = spike;
+        }
+        Paint spikes = new Paint();
+        spikes.setColor(Color.argb(255, 62, 92, 33));
+        spikes.setStyle(STROKE.FILL);
         if(left + dX < 0 || right + dX > canvas.getWidth()) {
             dX *= -1;
             count++;
+        }
+        int numSpikes = (int)(Math.random() * 4);
+        for(int i = 0; i < numSpikes; i++) {
+            int currentSpike = (int)(Math.random() * 12);
+            canvas.drawPath(spikesRight[currentSpike], spikes);
         }
         if(top + dY > canvas.getHeight())
             offsetTo(left, -height());
