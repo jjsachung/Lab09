@@ -11,6 +11,9 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class Sprite extends RectF {
     private int dX, dY, color, count = 0, topBorder, alpha = 255;
     private static final int BMP_COLUMNS = 3;
@@ -18,12 +21,15 @@ public class Sprite extends RectF {
     private static final int DOWN = 4, LEFT = 5, RIGHT = 6, UP = 7;
     private boolean gameOver = false;
     private Bitmap bitmap;
-    private int currentFrame = 0, iconWidth, iconHeight, animationDelay = 20;
+    Path[] spikesRight = new Path[12];
+    ArrayList<Integer> currentSpike= new ArrayList<Integer>();
+    private int currentFrame = 0, iconWidth, iconHeight, animationDelay = 20, numSpikes = 0;
     public Sprite(float left, float top, float right, float bottom, int dX, int dY, int color) {
         super(left, top, right, bottom);
         this.dX = dX;
         this.dY = dY;
         this.color = color;
+
     }
 
     public Sprite(float left, float top, float right, float bottom) {
@@ -39,25 +45,14 @@ public class Sprite extends RectF {
     }
 
     public void update(Canvas canvas){
-        Path[] spikesRight = new Path[12];
-        for(int i = 0; i < 12; i++){
-            Path spike = new Path();
-            spike.moveTo(canvas.getWidth(), i * (canvas.getHeight()/12));
-            spike.lineTo(canvas.getWidth() - 100, (i * (canvas.getHeight()/12))+ canvas.getWidth()/12);
-            spike.lineTo(canvas.getWidth(), (i * (canvas.getHeight()/12)) + canvas.getWidth()/6);
-            spikesRight[i] = spike;
-        }
-        Paint spikes = new Paint();
-        spikes.setColor(Color.argb(255, 62, 92, 33));
-        spikes.setStyle(STROKE.FILL);
         if(left + dX < 0 || right + dX > canvas.getWidth()) {
+            currentSpike.removeAll(currentSpike);
             dX *= -1;
             count++;
-        }
-        int numSpikes = (int)(Math.random() * 4);
-        for(int i = 0; i < numSpikes; i++) {
-            int currentSpike = (int)(Math.random() * 12);
-            canvas.drawPath(spikesRight[currentSpike], spikes);
+            numSpikes = (int) (Math.random() * 4);
+            for (int i = 0; i < numSpikes; i++) {
+                currentSpike.add((int) (Math.random() * 7) + 3);
+            }
         }
         if(top + dY > canvas.getHeight())
             offsetTo(left, -height());
@@ -78,8 +73,17 @@ public class Sprite extends RectF {
 //            gameOver = true;
         }
     }
-
+    int score = 0;
     public void draw(Canvas canvas){
+        if(spikesRight[0]==null) {
+            for (int i = 0; i < 12; i++) {
+                Path spike = new Path();
+                spike.moveTo(canvas.getWidth(), i * (canvas.getHeight() / 12));
+                spike.lineTo(canvas.getWidth() - 100, (i * (canvas.getHeight() / 12)) + canvas.getWidth() / 12);
+                spike.lineTo(canvas.getWidth(), (i * (canvas.getHeight() / 12)) + canvas.getWidth() / 6);
+                spikesRight[i] = spike;
+            }
+        }
 //        Paint paint = new Paint();
 //        paint.setColor(color);
 //        canvas.drawCircle(centerX(), centerY(), width()/2, paint);
@@ -95,6 +99,27 @@ public class Sprite extends RectF {
             int srcY = getAnimationRow() * iconHeight + 5;
             Rect src = new Rect(srcX, srcY, srcX + iconWidth, srcY + iconHeight);
             canvas.drawBitmap(bitmap, src, this, null);
+        }
+        //i didn't test this new code
+
+
+//        ArrayList<Integer> currentSpike = new ArrayList<Integer>();
+        Paint spikes = new Paint();
+        spikes.setColor(Color.argb(255, 62, 92, 33));
+        spikes.setStyle(STROKE.FILL);
+        if(count > score) {
+
+
+            System.out.println("numSpikes: " + numSpikes);
+//            for (int i = 0; i < numSpikes; i++) {
+
+//                System.out.println("currentSpike: " + currentSpike.get(i));
+//            }
+
+            score++;
+        }
+        for(int i = 0; i < currentSpike.size(); i++){
+            canvas.drawPath(spikesRight[currentSpike.get(i)], spikes);
         }
     }
 
