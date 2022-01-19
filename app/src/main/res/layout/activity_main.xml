@@ -7,14 +7,6 @@
     tools:context=".MainActivity"
     android:background="#9ec26e">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".92"
-        android:id="@+id/guideline"
-        />
-
     <view
         android:id="@+id/drawView"
         android:layout_width="match_parent"

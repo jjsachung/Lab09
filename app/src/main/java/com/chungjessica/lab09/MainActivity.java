@@ -12,6 +12,7 @@ public class MainActivity extends AppCompatActivity {
     DrawView drawView;
     TextView textView;
     boolean test = false;
+    int clickCount = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +25,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void moveUp(View view) {
+        clickCount = drawView.sprite.getCount();
+        if(clickCount == 0) {
+            drawView.sprite.setdX(-6);
+            drawView.sprite.setdY(5);
+        }
         drawView.sprite.offsetTo(drawView.sprite.getLeft(), drawView.sprite.getTop() - 150);
+        //clickCount++;
     }
 
 }

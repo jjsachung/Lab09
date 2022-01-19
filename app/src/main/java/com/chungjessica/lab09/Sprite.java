@@ -22,6 +22,7 @@ public class Sprite extends RectF {
     private boolean gameOver = false;
     private Bitmap bitmap;
     Path[] spikesRight = new Path[12];
+    Path[] spikesLeft = new Path[12];
     ArrayList<Integer> currentSpike= new ArrayList<Integer>();
     private int currentFrame = 0, iconWidth, iconHeight, animationDelay = 20, numSpikes = 0;
     public Sprite(float left, float top, float right, float bottom, int dX, int dY, int color) {
@@ -49,7 +50,7 @@ public class Sprite extends RectF {
             currentSpike.removeAll(currentSpike);
             dX *= -1;
             count++;
-            numSpikes = (int) (Math.random() * 4);
+            numSpikes = ((int) (Math.random() *4) + 1);
             for (int i = 0; i < numSpikes; i++) {
                 currentSpike.add((int) (Math.random() * 7) + 3);
             }
@@ -64,13 +65,10 @@ public class Sprite extends RectF {
             animationDelay = 20;
         }
         if(top + dY < topBorder || bottom + dY > canvas.getHeight() - topBorder - 100){
-//            Paint paint = new Paint();
-//            paint.setColor(Color.argb(255, 242, 207, 78));
-//            canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), paint);
-//            top = topBorder - 5;
-            offsetTo(canvas.getWidth()/2, canvas.getHeight()/2);
+            offsetTo(canvas.getWidth()/2 - iconWidth, canvas.getHeight()/2 - iconHeight);
             count = 0;
-//            gameOver = true;
+            dY = 0;
+            dX = 0;
         }
     }
     int score = 0;
@@ -82,6 +80,15 @@ public class Sprite extends RectF {
                 spike.lineTo(canvas.getWidth() - 100, (i * (canvas.getHeight() / 12)) + canvas.getWidth() / 12);
                 spike.lineTo(canvas.getWidth(), (i * (canvas.getHeight() / 12)) + canvas.getWidth() / 6);
                 spikesRight[i] = spike;
+            }
+        }
+        if(spikesLeft[0]==null) {
+            for (int i = 0; i < 12; i++) {
+                Path spike = new Path();
+                spike.moveTo(0, i * (canvas.getHeight() / 12));
+                spike.lineTo(100, (i * (canvas.getHeight() / 12)) + canvas.getWidth() / 12);
+                spike.lineTo(0, (i * (canvas.getHeight() / 12)) + canvas.getWidth() / 6);
+                spikesLeft[i] = spike;
             }
         }
 //        Paint paint = new Paint();
@@ -118,8 +125,15 @@ public class Sprite extends RectF {
 
             score++;
         }
-        for(int i = 0; i < currentSpike.size(); i++){
-            canvas.drawPath(spikesRight[currentSpike.get(i)], spikes);
+        if(count % 2 == 1) {
+            for (int i = 0; i < currentSpike.size(); i++) {
+                canvas.drawPath(spikesRight[currentSpike.get(i)], spikes);
+            }
+        }
+        else{
+            for(int i = 0; i < currentSpike.size(); i++){
+                canvas.drawPath(spikesLeft[currentSpike.get(i)], spikes);
+            }
         }
     }
 

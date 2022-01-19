@@ -50,9 +50,6 @@ public class DrawView extends View {
             sprite.setTopBorder((int)(getHeight()*.15));
         else if(sprite.getCount() < 30)
             sprite.setTopBorder((int)(getHeight() * .2));
-        else if(sprite.getCount() < 40)
-            sprite.setTopBorder((int)(getHeight() * .25));
-
         triangleWidth =  (getWidth()/numTri);
         trianglePath = new Path();
         trianglePath.moveTo(0, sprite.getTopBorder());
